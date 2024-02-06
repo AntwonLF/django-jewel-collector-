@@ -1,12 +1,12 @@
 from django.db import models
+from django.utils import timezone  # Import timezone for handling date and time
 
 CLEANING_TYPES = (
-        ('UL', 'Ultrasonic'),
-        ('ST', 'Steam'),
-        ('MA', 'Manual'),
-    )
+    ('UL', 'Ultrasonic'),
+    ('ST', 'Steam'),
+    ('MA', 'Manual'),
+)
 
-# Create your models here.
 class Jewels(models.Model):
     name = models.CharField(max_length=255)
     material = models.CharField(max_length=100)
@@ -14,7 +14,6 @@ class Jewels(models.Model):
     description = models.TextField(blank=True)
     color = models.CharField(max_length=100)
 
-     # new code below
     def __str__(self):
         return self.name
     
@@ -38,10 +37,16 @@ class Cleaning(models.Model):
     date = models.DateField('Cleaning Date')
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
-    jewel = models.ForeignKey(Jewels, on_delete=models.CASCADE, related_name='cleanings')
-
     def __str__(self):
         return f"{self.get_cleaning_type_display()} cleaning on {self.date}"
     
     class Meta:
         ordering = ['-date']
+
+class Collector(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    jewels = models.ManyToManyField(Jewels, related_name='collectors')
+
+    def __str__(self):
+        return self.name

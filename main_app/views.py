@@ -42,3 +42,15 @@ class CleaningDetailUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
     queryset = Cleaning.objects.all()
     serializer_class = CleaningSerializer
     lookup_field = 'pk'
+
+class CleaningsOnDateListView(generics.ListAPIView):
+    serializer_class = CleaningSerializer
+
+    def get_queryset(self):
+        """
+        Optionally filters the queryset by date, passed as a query parameter.
+        """
+        query_date = self.request.query_params.get('date', None)
+        if query_date:
+            return Cleaning.objects.filter(date=query_date)
+        return Cleaning.objects.none() 
