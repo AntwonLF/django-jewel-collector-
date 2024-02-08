@@ -38,12 +38,7 @@ class JewelsDetail(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied({'message': 'You do not have permission to edit this jewel.'})
         serializer.save()
 
-    def delete(self, request, *args, **kwargs):
-        # Ensure that only the owner of the jewel can delete it
-        jewel = self.get_object()
-        if request.user != jewel.user:
-            raise PermissionDenied({'message': 'You do not have permission to delete this jewel.'})
-        return super(JewelsDetail, self).delete(request, *args, **kwargs)
+        
 
 
 class CleaningListCreate(generics.ListCreateAPIView):
