@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone  # Import timezone for handling date and time
+from django.contrib.auth.models import User  # Import the User model
 
 CLEANING_TYPES = (
     ('UL', 'Ultrasonic'),
@@ -8,6 +9,7 @@ CLEANING_TYPES = (
 )
 
 class Jewels(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='jewels')  # Establishing the relationship
     name = models.CharField(max_length=255)
     material = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
